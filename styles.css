@@ -29,8 +29,8 @@ ul {
 
 /* Header styles */
 header {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 15px 0;
     position: sticky;
     top: 0;
@@ -41,43 +41,65 @@ header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 2px solid #FFD700;
 }
 
 .logo h1 {
     font-size: 24px;
-    color: #4a6bff;
+    color: #FFD700;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 nav ul {
     display: flex;
+    background-color: #000;
+    padding: 5px 15px;
+    border-radius: 25px;
+    border: 1px solid #FFD700;
 }
 
 nav ul li {
     margin-left: 20px;
+    position: relative;
 }
 
 nav ul li a {
-    padding: 5px 10px;
+    color: #fff;
+    padding: 8px 15px;
     transition: all 0.3s ease;
+    font-weight: 500;
+    border-radius: 20px;
 }
 
 nav ul li a:hover, nav ul li a.active {
-    color: #4a6bff;
+    color: #000;
+    background-color: #FFD700;
 }
 
 .cart a {
     display: flex;
     align-items: center;
+    background-color: #FFD700;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.cart a:hover {
+    background-color: #fff;
 }
 
 .cart-icon {
     font-size: 20px;
     margin-right: 5px;
+    color: #000;
 }
 
 .cart-count {
-    background-color: #4a6bff;
-    color: white;
+    background-color: #000;
+    color: #FFD700;
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -85,6 +107,8 @@ nav ul li a:hover, nav ul li a.active {
     align-items: center;
     justify-content: center;
     font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #FFD700;
 }
 
 /* Hero section */
@@ -158,7 +182,6 @@ nav ul li a:hover, nav ul li a.active {
     margin-top: 20px;
     overflow: hidden;
 }
-
 
 .product-image {
     flex: 1;
@@ -311,20 +334,48 @@ nav ul li a:hover, nav ul li a.active {
 
 /* Footer */
 footer {
-    background-color: #333;
-    color: white;
-    padding: 20px 0;
+    background-color: #000;
+    padding: 25px 0;
     text-align: center;
+    border-top: 2px solid #FFD700;
+}
+
+footer .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer p {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
     header .container {
         flex-direction: column;
+        gap: 15px;
+        padding: 10px;
     }
 
     nav ul {
-        margin: 15px 0;
+        margin: 10px 0;
+        padding: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li {
+        margin: 5px 10px;
+    }
+
+    .cart a {
+        margin-top: 10px;
     }
 
     .product-grid {
@@ -371,45 +422,39 @@ footer {
 
 .rating {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
     margin: 10px 0;
-    position: relative;
 }
 
 .stars {
     display: flex;
     gap: 2px;
-    cursor: pointer;
+    position: relative;
 }
 
 .star {
     color: #FFD700;
     font-size: 20px;
+    cursor: pointer;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
 }
 
-.rating-count {
-    color: #666;
-    font-size: 0.9em;
-}
-
-.rating-details {
+.rating-tooltip {
     display: none;
     position: absolute;
     top: 100%;
     right: 0;
     background: white;
-    padding: 15px;
-    border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 15px;
     width: 300px;
-    z-index: 10;
+    z-index: 100;
     margin-top: 10px;
 }
 
-.stars:hover + .rating-count + .rating-details,
-.rating-details:hover {
+.stars:hover .rating-tooltip {
     display: block;
 }
 
@@ -421,7 +466,7 @@ footer {
 }
 
 .rating-level {
-    width: 60px;
+    min-width: 60px;
     font-size: 0.9em;
     color: #666;
 }
@@ -436,20 +481,20 @@ footer {
 
 .bar {
     height: 100%;
-    background-color: #FFD700;
+    background-color: #ffd700;
     border-radius: 4px;
     transition: width 0.3s ease;
 }
 
 .rating-percent {
-    width: 40px;
+    min-width: 45px;
     font-size: 0.9em;
     color: #666;
     text-align: left;
 }
 
-/* إضافة سهم صغير فوق صندوق التفاصيل */
-.rating-details::before {
+/* Add a small arrow to the tooltip */
+.rating-tooltip:before {
     content: '';
     position: absolute;
     top: -8px;
@@ -457,6 +502,11 @@ footer {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid white;
+}
+
+.rating-count {
+    color: #666;
+    font-size: 0.9em;
 }
 
 .product-description {
