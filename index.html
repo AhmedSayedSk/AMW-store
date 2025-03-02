@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMW Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="logo">
+                    <h1>AMW Store</h1>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search products..." class="search-input">
+                    <button class="search-button">🔍</button>
+                </div>
+                <div class="header-actions">
+                    <div class="cart">
+                        <a href="#" id="cart-Link">
+                            <span class="cart-icon">🛒</span> 
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                    <div class="lang-toggle">
+                        <a href="#" id="langToggleBtn">
+                            <span class="lang-icon">🌍</span> 
+                            <span class="lang-indicator" id="langIndicator">EN</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-background">
+                <img src="https://images.unsplash.com/photo-1593640495253-23196b27a87f?w=1200" alt="Gaming Setup Collection">
+                <div class="overlay"></div>
+            </div>
+            <div class="container hero-content">
+                <h2>Welcome to AMW Store</h2>
+                <p>Discover amazing products at great prices</p>
+                <button class="btn">Shop Now</button>
+            </div>
+        </section>
+
+        <section class="featured-products">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <div class="product-grid" id="featured-products">
+                    <!-- Products will be loaded here via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 AMW Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
