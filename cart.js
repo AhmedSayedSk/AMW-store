@@ -1,7 +1,8 @@
 // Cart functionality
-let cart = [];
-let cartCount = 0;
-let currentLang = 'en';
+// Remove the variable declarations since they're already defined in script.js
+// let cart = [];
+// let cartCount = 0;
+// let currentLang = 'en';
 
 // Load cart data when page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -27,36 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
 });
 
-// Function to update localStorage
-function updateLocalStorage() {
-    localStorage.setItem('cartItems', JSON.stringify(cart));
-    localStorage.setItem('cartCount', cartCount);
-    localStorage.setItem('currentLang', currentLang);
-}
-
-// Function to update cart count in the UI
-function updateCartCount() {
-    const cartCountElement = document.querySelector('.cart-count');
-    if (cartCountElement) {
-        cartCountElement.textContent = cartCount;
-    }
-}
-
-// Function to format price
-function formatPrice(price) {
-    return currentLang === 'ar' ? `${(price * 30.90).toFixed(2)} ج.م` : `$${price.toFixed(2)}`;
-}
-
 // Function to display cart items
 function displayCartItems() {
-    const cartContainer = document.getElementById('cart-items');
+    const cartContainer = document.getElementById('cartItems');
     if (!cartContainer) return;
-
-    cartContainer.innerHTML = '';
 
     if (cart.length === 0) {
         cartContainer.innerHTML = `
             <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
                 <p>${currentLang === 'ar' ? 'السلة فارغة' : 'Your cart is empty'}</p>
                 <a href="index.html" class="continue-shopping">
                     ${currentLang === 'ar' ? 'العودة للتسوق' : 'Continue Shopping'}
@@ -66,52 +46,42 @@ function displayCartItems() {
         return;
     }
 
-    cart.forEach((item, index) => {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
-            <div class="item-image">
-                <img src="${item.image}" alt="${item.name}">
+    cartContainer.innerHTML = cart.map((item, index) => {
+        // Get translated product name from translations object
+        const translatedProduct = translations[currentLang].products[item.id];
+        const productName = translatedProduct ? translatedProduct.name : item.name;
+        
+        return `
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    <img src="${item.image}" alt="${productName}">
+                </div>
+                <div class="cart-item-details">
+                    <h3 class="cart-item-name">${productName}</h3>
+                    <p class="cart-item-price">${formatPrice(item.price)}</p>
+                </div>
+                <div class="cart-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                        <span class="quantity-value">1</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </div>
-            <div class="item-details">
-                <h3>${item.name}</h3>
-                <p class="item-price">${formatPrice(item.price)}</p>
-            </div>
-            <button class="remove-item" onclick="removeFromCart(${index})">
-                ${currentLang === 'ar' ? 'إزالة' : 'Remove'}
-            </button>
         `;
-        cartContainer.appendChild(cartItem);
-    });
+    }).join('');
 }
 
-// Function to update cart summary
-function updateCartSummary() {
-    const summaryContainer = document.getElementById('cart-summary');
-    if (!summaryContainer) return;
-
-    const subtotal = cart.reduce((total, item) => total + item.price, 0);
-    const shipping = 10; // Fixed shipping cost
-    const total = subtotal + shipping;
-
-    summaryContainer.innerHTML = `
-        <h3>${currentLang === 'ar' ? 'ملخص الطلب' : 'Order Summary'}</h3>
-        <div class="summary-item">
-            <span>${currentLang === 'ar' ? 'المجموع الفرعي' : 'Subtotal'}:</span>
-            <span>${formatPrice(subtotal)}</span>
-        </div>
-        <div class="summary-item">
-            <span>${currentLang === 'ar' ? 'الشحن' : 'Shipping'}:</span>
-            <span>${formatPrice(shipping)}</span>
-        </div>
-        <div class="summary-total">
-            <span>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}:</span>
-            <span>${formatPrice(total)}</span>
-        </div>
-        <button class="checkout-button">
-            ${currentLang === 'ar' ? 'إتمام الشراء' : 'Proceed to Checkout'}
-        </button>
-    `;
+// Function to update quantity
+function updateQuantity(index, change) {
+    const quantityElement = document.querySelectorAll('.quantity-value')[index];
+    let quantity = parseInt(quantityElement.textContent);
+    quantity = Math.max(1, quantity + change);
+    quantityElement.textContent = quantity;
+    updateCartSummary();
 }
 
 // Function to remove item from cart
@@ -129,6 +99,48 @@ function removeFromCart(index) {
     notification.textContent = currentLang === 'ar' ? 'تم إزالة المنتج من السلة' : 'Item removed from cart';
     document.body.appendChild(notification);
     setTimeout(() => notification.remove(), 2000);
+}
+
+// Function to update cart summary
+function updateCartSummary() {
+    const subtotalElement = document.getElementById('subtotal');
+    const shippingElement = document.getElementById('shipping');
+    const totalElement = document.getElementById('total');
+
+    if (!subtotalElement || !shippingElement || !totalElement) return;
+
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+        const quantity = parseInt(document.querySelectorAll('.quantity-value')[index]?.textContent || 1);
+        subtotal += item.price * quantity;
+    });
+
+    const shipping = subtotal > 0 ? 10 : 0;
+    const total = subtotal + shipping;
+
+    subtotalElement.textContent = formatPrice(subtotal);
+    shippingElement.textContent = formatPrice(shipping);
+    totalElement.textContent = formatPrice(total);
+}
+
+// Function to format price
+function formatPrice(price) {
+    return currentLang === 'ar' ? `${(price * 30.90).toFixed(2)} ج.م` : `$${price.toFixed(2)}`;
+}
+
+// Function to update localStorage
+function updateLocalStorage() {
+    localStorage.setItem('cartItems', JSON.stringify(cart));
+    localStorage.setItem('cartCount', cartCount);
+    localStorage.setItem('currentLang', currentLang);
+}
+
+// Function to update cart count in the UI
+function updateCartCount() {
+    const cartCountElement = document.querySelector('.cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = cartCount;
+    }
 }
 
 // Add translations for cart page
@@ -152,4 +164,10 @@ translations.ar.cart = {
     checkout: "إتمام الشراء",
     continueShopping: "مواصلة التسوق",
     empty: "سلة التسوق فارغة"
-}; 
+};
+
+// Add event listener for language change
+document.addEventListener('languageChanged', function() {
+    displayCartItems();
+    updateCartSummary();
+}); 

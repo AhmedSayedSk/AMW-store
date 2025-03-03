@@ -1,16 +1,24 @@
+// Global variables
+let currentLang = 'en';
+let cart = [];
+let cartCount = 0;
+
 // Mobile menu functionality
 const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
 const mainNav = document.querySelector('.main-nav');
 const searchBox = document.querySelector('.search-box');
 
-mobileMenuBtn.addEventListener('click', () => {
-    mobileMenuBtn.classList.toggle('active');
-    mainNav.classList.toggle('active');
-});
+if (mobileMenuBtn && mainNav) {
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenuBtn.classList.toggle('active');
+        mainNav.classList.toggle('active');
+    });
+}
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
-    if (!mobileMenuBtn.contains(e.target) && 
+    if (mobileMenuBtn && mainNav && 
+        !mobileMenuBtn.contains(e.target) && 
         !mainNav.contains(e.target) && 
         mainNav.classList.contains('active')) {
         mobileMenuBtn.classList.remove('active');
@@ -24,9 +32,9 @@ window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
         if (window.innerWidth > 768) {
-            mobileMenuBtn.classList.remove('active');
-            mainNav.classList.remove('active');
-            searchBox.classList.remove('active');
+            if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+            if (mainNav) mainNav.classList.remove('active');
+            if (searchBox) searchBox.classList.remove('active');
         }
     }, 250);
 });
@@ -118,10 +126,6 @@ const products = [
         description: "Pro Gaming Headset with 7.1 Surround Sound and RGB Lighting"
     },
 ];
-
-// Cart state
-let cart = [];
-let cartCount = 0;
 
 // Function to update cart counin the UI
 function updateCartCount() {
@@ -249,50 +253,76 @@ const translations = {
     }
 };
 
-let currentLang = 'en';
-
-// Function to update all content based on language
+// Function to update content based on language
 function updateContent(lang) {
     // Update navigation
     const navLinks = document.querySelectorAll('nav ul li a');
     const navItems = ['home', 'products', 'categories', 'about', 'contact'];
     navLinks.forEach((link, index) => {
-        link.textContent = translations[lang].nav[navItems[index]];
+        if (link && translations[lang]?.nav) {
+            link.textContent = translations[lang].nav[navItems[index]];
+        }
     });
 
-    // Update search
-    document.querySelector('.search-input').placeholder = translations[lang].search;
+    // Update search placeholder
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput && translations[lang]?.search) {
+        searchInput.placeholder = translations[lang].search;
+    }
 
     // Update hero section
-    document.querySelector('.hero h2').textContent = translations[lang].welcome;
-    document.querySelector('.hero p').textContent = translations[lang].discover;
-    document.querySelector('.hero .btn').textContent = translations[lang].shopNow;
+    const heroTitle = document.querySelector('.hero h2');
+    const heroDesc = document.querySelector('.hero p');
+    const heroBtn = document.querySelector('.hero .btn');
+    
+    if (heroTitle && translations[lang]?.welcome) {
+        heroTitle.textContent = translations[lang].welcome;
+    }
+    if (heroDesc && translations[lang]?.discover) {
+        heroDesc.textContent = translations[lang].discover;
+    }
+    if (heroBtn && translations[lang]?.shopNow) {
+        heroBtn.textContent = translations[lang].shopNow;
+    }
 
     // Update featured products heading
-    document.querySelector('.featured-products h2').textContent = translations[lang].featured;
+    const featuredTitle = document.querySelector('.featured-products h2');
+    if (featuredTitle && translations[lang]?.featured) {
+        featuredTitle.textContent = translations[lang].featured;
+    }
 
     // Update footer
-    document.querySelector('footer p').textContent = translations[lang].copyright;
+    const footerCopyright = document.querySelector('footer p');
+    if (footerCopyright && translations[lang]?.copyright) {
+        footerCopyright.textContent = translations[lang].copyright;
+    }
 
     // Update footer content
     document.querySelectorAll('[data-translate]').forEach(element => {
+        if (!element || !translations[lang]) return;
+        
         const key = element.getAttribute('data-translate');
         const keys = key.split('.');
         let translation = translations[lang];
         
         for (const k of keys) {
+            if (!translation) break;
             translation = translation[k];
         }
         
-        if (element.tagName === 'INPUT') {
-            element.placeholder = translation;
-        } else {
-            element.textContent = translation;
+        if (translation) {
+            if (element.tagName === 'INPUT') {
+                element.placeholder = translation;
+            } else {
+                element.textContent = translation;
+            }
         }
     });
 
-    // Update products
-    displayProducts(products);
+    // Update products if on the main page
+    if (document.getElementById('featured-products')) {
+        displayProducts(products);
+    }
 }
 
 // Enhanced display products function
@@ -358,28 +388,41 @@ const langToggleBtn = document.getElementById('langToggleBtn');
 const langIndicator = document.getElementById('langIndicator');
 const htmlElement = document.documentElement;
 
-langToggleBtn.addEventListener('click', () => {
-    const isRTL = htmlElement.dir === 'rtl';
-    htmlElement.dir = isRTL ? 'ltr' : 'rtl';
-    currentLang = isRTL ? 'en' : 'ar';
-    langIndicator.textContent = isRTL ? 'EN' : 'AR';
-    
-    // Update all content
-    updateContent(currentLang);
-});
+if (langToggleBtn && langIndicator) {
+    langToggleBtn.addEventListener('click', () => {
+        const isRTL = htmlElement.dir === 'rtl';
+        htmlElement.dir = isRTL ? 'ltr' : 'rtl';
+        currentLang = isRTL ? 'en' : 'ar';
+        langIndicator.textContent = isRTL ? 'EN' : 'AR';
+        
+        // Update all content
+        updateContent(currentLang);
+        
+        // Save language preference
+        localStorage.setItem('currentLang', currentLang);
 
-// Initialize the site in English
-updateContent('en');
+        // Dispatch custom event for language change
+        const event = new Event('languageChanged');
+        document.dispatchEvent(event);
+    });
+}
 
-// Cart navigation
-document.querySelector('.cart a').addEventListener('click', function(e) {
-    // Save cart data to localStorage before navigating
-    localStorage.setItem('cartItems', JSON.stringify(cart));
-    localStorage.setItem('cartCount', cartCount);
-});
-
-// Load cart data from localStorage when page loads
+// Initialize the site
 document.addEventListener('DOMContentLoaded', function() {
+    // Load saved language preference
+    const savedLang = localStorage.getItem('currentLang');
+    if (savedLang) {
+        currentLang = savedLang;
+        htmlElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
+        if (langIndicator) {
+            langIndicator.textContent = savedLang === 'ar' ? 'AR' : 'EN';
+        }
+    }
+
+    // Update content based on current language
+    updateContent(currentLang);
+
+    // Load cart data
     const savedCart = localStorage.getItem('cartItems');
     const savedCount = localStorage.getItem('cartCount');
     
@@ -390,4 +433,11 @@ document.addEventListener('DOMContentLoaded', function() {
         cartCount = parseInt(savedCount);
         updateCartCount();
     }
+});
+
+// Cart navigation
+document.querySelector('.cart a').addEventListener('click', function(e) {
+    // Save cart data to localStorage before navigating
+    localStorage.setItem('cartItems', JSON.stringify(cart));
+    localStorage.setItem('cartCount', cartCount);
 });
