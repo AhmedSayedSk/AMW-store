@@ -370,3 +370,24 @@ langToggleBtn.addEventListener('click', () => {
 
 // Initialize the site in English
 updateContent('en');
+
+// Cart navigation
+document.querySelector('.cart a').addEventListener('click', function(e) {
+    // Save cart data to localStorage before navigating
+    localStorage.setItem('cartItems', JSON.stringify(cart));
+    localStorage.setItem('cartCount', cartCount);
+});
+
+// Load cart data from localStorage when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const savedCart = localStorage.getItem('cartItems');
+    const savedCount = localStorage.getItem('cartCount');
+    
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+    }
+    if (savedCount) {
+        cartCount = parseInt(savedCount);
+        updateCartCount();
+    }
+});
