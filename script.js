@@ -131,7 +131,7 @@ function updateCartCount() {
 
 // Function to format price
 function formatPrice(price) {
-    return `$${price.toFixed(2)}`;
+    return currentLang === 'ar' ? `${(price * 30.90).toFixed(2)} ج.م` : `$${price.toFixed(2)}`;
 }
 
 // Function to add item to cart
@@ -177,8 +177,19 @@ const translations = {
         welcome: "Welcome to AMW Store",
         discover: "Discover amazing products at great prices",
         featured: "Featured Products",
-        copyright: "© 2023 AMW Store. All rights reserved.",
+        copyright: "© 2025 AMW Store. All rights reserved.",
         added: "added to cart!",
+        footer: {
+            about: "About Us",
+            aboutText: "AMW Store is your premier destination for online shopping, offering the best products at competitive prices with excellent customer service.",
+            quickLinks: "Quick Links",
+            contact: "Contact Us",
+            address: "123 Main Street, City",
+            newsletter: "Newsletter",
+            newsletterText: "Subscribe to our newsletter for latest updates and offers",
+            emailPlaceholder: "Enter your email",
+            subscribe: "Subscribe"
+        },
         products: {
             1: { name: "Gaming Laptop", description: "High-performance gaming laptop" },
             2: { name: "Wireless Headphones", description: "Premium wireless headphones" },
@@ -208,8 +219,19 @@ const translations = {
         welcome: "مرحباً بكم في متجر AMW",
         discover: "اكتشف منتجات مذهلة بأسعار رائعة",
         featured: "المنتجات المميزة",
-        copyright: "© 2023 متجر AMW. جميع الحقوق محفوظة.",
+        copyright: "© 2025 متجر AMW. جميع الحقوق محفوظة.",
         added: "تمت الإضافة إلى السلة!",
+        footer: {
+            about: "عن المتجر",
+            aboutText: "متجر AMW هو وجهتك المثالية للتسوق الإلكتروني، نقدم أفضل المنتجات بأسعار تنافسية وخدمة عملاء متميزة.",
+            quickLinks: "روابط سريعة",
+            contact: "اتصل بنا",
+            address: "123 شارع الرئيسي، المدينة",
+            newsletter: "النشرة البريدية",
+            newsletterText: "اشترك في نشرتنا البريدية للحصول على آخر العروض والتحديثات",
+            emailPlaceholder: "البريد الإلكتروني",
+            subscribe: "اشتراك"
+        },
         products: {
             1: { name: "لابتوب للألعاب", description: "لابتوب عالي الأداء للألعاب" },
             2: { name: "سماعات لاسلكية", description: "سماعات لاسلكية فاخرة" },
@@ -251,6 +273,23 @@ function updateContent(lang) {
 
     // Update footer
     document.querySelector('footer p').textContent = translations[lang].copyright;
+
+    // Update footer content
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        const keys = key.split('.');
+        let translation = translations[lang];
+        
+        for (const k of keys) {
+            translation = translation[k];
+        }
+        
+        if (element.tagName === 'INPUT') {
+            element.placeholder = translation;
+        } else {
+            element.textContent = translation;
+        }
+    });
 
     // Update products
     displayProducts(products);
