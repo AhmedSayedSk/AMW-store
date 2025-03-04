@@ -333,7 +333,7 @@ function displayProducts(productsToShow) {
     productsToShow.forEach(product => {
         const translatedProduct = translations[currentLang].products[product.id];
         const productCard = `
-            <div class="product-card">
+            <div class="product-card" onclick="navigateToProduct(${product.id})">
                 <div class="product-image">
                     <img src="${product.image}" alt="${translatedProduct.name}" onerror="this.src='https://via.placeholder.com/200'">
                 </div>
@@ -341,12 +341,37 @@ function displayProducts(productsToShow) {
                     <h3 class="product-title">${translatedProduct.name}</h3>
                     <p class="product-description">${translatedProduct.description}</p>
                     <p class="product-price">${formatPrice(product.price)}</p>
-                    <button class="add-to-cart" onclick="addToCart(${product.id})">${translations[currentLang].addToCart}</button>
+                    <button class="add-to-cart" onclick="addToCart(${product.id}); event.stopPropagation();">${translations[currentLang].addToCart}</button>
                 </div>
             </div>
         `;
         productGrid.innerHTML += productCard;
     });
+}
+
+// Function to navigate to product page
+function navigateToProduct(productId) {
+    // Store the current product image in localStorage to use it in product page
+    const productCards = document.querySelectorAll('.product-card');
+    let productImage = '';
+    
+    // Find the clicked product card and get its image
+    productCards.forEach(card => {
+        if (card.getAttribute('onclick').includes(`navigateToProduct(${productId})`)) {
+            const imgElement = card.querySelector('.product-image img');
+            if (imgElement) {
+                productImage = imgElement.src;
+            }
+        }
+    });
+    
+    // Save the image to localStorage
+    if (productImage) {
+        localStorage.setItem('lastViewedProductImage', productImage);
+    }
+    
+    // Navigate to product page
+    window.location.href = `product.html?id=${productId}`;
 }
 
 // Search functionality
@@ -432,6 +457,117 @@ document.addEventListener('DOMContentLoaded', function() {
     if (savedCount) {
         cartCount = parseInt(savedCount);
         updateCartCount();
+    }
+
+    // Search Box Toggle for Mobile
+    const searchButton = document.querySelector('.search-button');
+    const searchBox = document.querySelector('.search-box');
+    
+    if (searchButton && searchBox) {
+        searchButton.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                searchBox.classList.toggle('active');
+            }
+        });
+    }
+
+    // Product Gallery Image Switcher
+    const galleryImages = document.querySelectorAll('.gallery-img');
+    const mainImage = document.querySelector('.main-image');
+    
+    if (galleryImages.length > 0 && mainImage) {
+        galleryImages.forEach(img => {
+            img.addEventListener('click', function() {
+                mainImage.src = this.src;
+                
+                // Remove active class from all gallery images
+                galleryImages.forEach(image => {
+                    image.classList.remove('active');
+                });
+                
+                // Add active class to clicked image
+                this.classList.add('active');
+            });
+        });
+    }
+
+    // Countdown Timer
+    const countdownElement = document.querySelector('.countdown');
+    
+    if (countdownElement) {
+        // Set the countdown to 24 hours from now
+        const endTime = new Date();
+        endTime.setHours(endTime.getHours() + 24);
+        
+        function updateCountdown() {
+            const now = new Date();
+            const diff = endTime - now;
+            
+            if (diff <= 0) {
+                countdownElement.textContent = "00:00:00";
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    // Add to Cart Button
+    const addToCartBtn = document.querySelector('.add-to-cart');
+    const cartCount = document.querySelector('.cart-count');
+    
+    if (addToCartBtn && cartCount) {
+        addToCartBtn.addEventListener('click', function() {
+            // Get current cart count
+            let count = parseInt(cartCount.textContent);
+            
+            // Increment count
+            count++;
+            
+            // Update cart count
+            cartCount.textContent = count;
+            
+            // Show notification
+            showNotification('تمت إضافة المنتج إلى سلة التسوق');
+        });
+    }
+
+    // Buy Now Button
+    const buyNowBtn = document.querySelector('.buy-now');
+    
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function() {
+            // Redirect to checkout page
+            // window.location.href = 'checkout.html';
+            
+            // For demo, just show notification
+            showNotification('جاري الانتقال إلى صفحة الدفع...');
+        });
+    }
+
+    // Newsletter Form
+    const newsletterForm = document.querySelector('.newsletter-form');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailInput = this.querySelector('.newsletter-input');
+            
+            if (emailInput && emailInput.value.trim() !== '') {
+                showNotification('تم الاشتراك في النشرة البريدية بنجاح!');
+                emailInput.value = '';
+            }
+        });
     }
 });
 

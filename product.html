@@ -1,48 +1,67 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة المنتج</title>
-    <link rel="stylesheet" href="css/product.css">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/new-product.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <div class="logo">
-                <h1> AMW Store</h1>
+            <div class="header-left">
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="logo">
+                    <h1>AMW Store</h1>
+                </div>
             </div>
-            <nav>
+
+            <nav class="main-nav">
                 <ul>
-                    <li><a href="#" class="active">الرئيسية</a></li>
-                    <li><a href="#">المنتجات</a></li>
-                    <li><a href="#">الفئات</a></li>
-                    <li><a href="#">من نحن</a></li>
-                    <li><a href="#">اتصل بنا</a></li>
+                    <li><a href="#" class="active" data-translate="nav.home">Home</a></li>
+                    <li><a href="#" data-translate="nav.products">Products</a></li>
+                    <li><a href="#" data-translate="nav.categories">Categories</a></li>
+                    <li><a href="#" data-translate="nav.about">About</a></li>
+                    <li><a href="#" data-translate="nav.contact">Contact</a></li>
                 </ul>
             </nav>
-            <div class="cart">
-                <a href="#"><span class="cart-icon">🛒</span> <span class="cart-count">0</span></a>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search products..." class="search-input" data-translate-placeholder="search">
+                    <button class="search-button">🔍</button>
+                </div>
+                <div class="header-actions">
+                    <div class="cart">
+                        <a href="cart.html">
+                            <span class="cart-icon">🛒</span><span class="cart-count">0</span>
+                        </a>
+                    </div>
+                    <div class="lang-toggle">
+                        <a href="#" id="langToggleBtn">
+                            <span class="lang-icon">🌍</span> 
+                            <span class="lang-indicator" id="langIndicator">EN</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-            <div class="container">
+    <div class="container">
         <div class="product-container">
             <div class="product-image">
-                <div class="product-gallery">
-                    <img src="img/61cf5aFhqVL._AC_SL1500_.jpg" alt="صورة المنتج 1" class="gallery-img">
-                    <img src="img/81gnWKQ-t5L._AC_SL1500_.jpg" alt="صورة المنتج 2" class="gallery-img">
-                    <img src="img/61UJBlxTSgL._AC_SL1500_.jpg" alt="صورة المنتج 3" class="gallery-img">
-                    <img src="img/61WRtQ6gZTL._AC_SL1500_.jpg" alt="صورة المنتج 4" class="gallery-img">
-                    <img src="img/61fKbZpxcpL._AC_SL1500_.jpg" alt="صورة المنتج 5" class="gallery-img">
-                </div>
                 <div class="main-image-container">
                     <img src="img/517T+qc6dXL._AC_SL1330_.jpg" alt="صورة المنتج الرئيسية" class="main-image">
                 </div>
             </div>
             <div class="product-details">
-                <h1 class="product-title">سماعات بلوتوث لاسلكية</h1>
+                <h1 class="product-title">Wireless Bluetooth Headphones</h1>
                 <div class="rating">
                     <div class="stars">
                         <span class="star">★</span>
@@ -52,35 +71,35 @@
                         <span class="star">☆</span>
                         <div class="rating-tooltip">
                             <div class="rating-bar">
-                                <span class="rating-level">5 نجوم</span>
+                                <span class="rating-level">5 stars</span>
                                 <div class="bar-container">
                                     <div class="bar" style="width: 65%"></div>
                                 </div>
                                 <span class="rating-percent">65%</span>
                             </div>
                             <div class="rating-bar">
-                                <span class="rating-level">4 نجوم</span>
+                                <span class="rating-level">4 stars</span>
                                 <div class="bar-container">
                                     <div class="bar" style="width: 20%"></div>
                                 </div>
                                 <span class="rating-percent">20%</span>
                             </div>
                             <div class="rating-bar">
-                                <span class="rating-level">3 نجوم</span>
+                                <span class="rating-level">3 stars</span>
                                 <div class="bar-container">
                                     <div class="bar" style="width: 10%"></div>
                                 </div>
                                 <span class="rating-percent">10%</span>
                             </div>
                             <div class="rating-bar">
-                                <span class="rating-level">2 نجوم</span>
+                                <span class="rating-level">2 stars</span>
                                 <div class="bar-container">
                                     <div class="bar" style="width: 3%"></div>
                                 </div>
                                 <span class="rating-percent">3%</span>
                             </div>
                             <div class="rating-bar">
-                                <span class="rating-level">1 نجمة</span>
+                                <span class="rating-level">1 star</span>
                                 <div class="bar-container">
                                     <div class="bar" style="width: 2%"></div>
                                 </div>
@@ -88,34 +107,34 @@
                             </div>
                         </div>
                     </div>
-                    <span class="rating-count">(4.2 من 5 | 150 تقييم)</span>
+                    <span class="rating-count">(4.2 out of 5 | 150 reviews)</span>
                 </div>
-                <div class="offer-badge">خصم 40%</div>
+                <div class="offer-badge">Discount 40%</div>
                 <div class="price-container">
-                    <div class="product-price">999 جنيه</div>
-                    <div class="old-price">1,699 جنيه</div>
-                    <div class="savings">وفرت: 700 جنيه</div>
+                    <div class="product-price">999 EGP</div>
+                    <div class="old-price">1,699 EGP</div>
+                    <div class="savings">You saved: 700 EGP</div>
                 </div>
                 <div class="offer-timer">
-                    <span class="timer-label">ينتهي العرض في:</span>
+                    <span class="timer-label">Offer ends in:</span>
                     <div class="countdown">23:45:12</div>
                 </div>
                 <div class="product-description">
-                    <h2>وصف المنتج</h2>
-                    <p>سماعات بلوتوث لاسلكية عالية الجودة مع صوت نقي وعمر بطارية طويل. مثالية للاستخدام اليومي والرياضة.</p>
+                    <h2>Product Description</h2>
+                    <p>High-quality wireless Bluetooth headphones with pure sound and long battery life. Perfect for everyday use and sports.</p>
                 </div>
                 <div class="product-features">
-                    <h2>المميزات</h2>
+                    <h2>Features</h2>
                     <ul>
-                        <li>بطارية تدوم حتى 20 ساعة</li>
-                        <li>مقاومة للماء والعرق</li>
-                        <li>تحكم باللمس</li>
-                        <li>جودة صوت عالية</li>
+                        <li>Battery lasts up to 20 hours</li>
+                        <li>Water and sweat resistant</li>
+                        <li>Touch control</li>
+                        <li>High sound quality</li>
                     </ul>
                 </div>
                 <div class="buttons-container">
-                    <button class="add-to-cart">أضف إلى السلة</button>
-                    <button class="buy-now">اشتري الآن</button>
+                    <button class="add-to-cart" data-translate="addToCart">Add to Cart</button>
+                    <button class="buy-now">Buy Now</button>
                 </div>
             </div>
         </div>
@@ -123,8 +142,68 @@
 
     <footer>
         <div class="container">
-            <p>جميع الحقوق محفوظة © 2024 متجر AMW</p>
+            <div class="footer-content">
+                <!-- About Section -->
+                <div class="footer-section">
+                    <h3 data-translate="footer.about">About Store</h3>
+                    <p data-translate="footer.aboutText">AMW Store is your ideal destination for online shopping, offering the best products at competitive prices and excellent customer service.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"> <i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links Section -->
+                <div class="footer-section">
+                    <h3 data-translate="footer.quickLinks">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-translate="nav.home">Home</a></li>
+                        <li><a href="#" data-translate="nav.products">Products</a></li>
+                        <li><a href="#" data-translate="nav.categories">Categories</a></li>
+                        <li><a href="#" data-translate="nav.about">About</a></li>
+                        <li><a href="#" data-translate="nav.contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="footer-section">
+                    <h3 data-translate="footer.contact">Contact Us</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-translate="footer.address">123 Main Street, City</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span> 01202416661 </span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@amwstore.com</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter Section -->
+                <div class="footer-section">
+                    <h3 data-translate="footer.newsletter">Newsletter</h3>
+                    <p data-translate="footer.newsletterText">Subscribe to our newsletter to receive the latest offers and updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" data-translate-placeholder="footer.emailPlaceholder" placeholder="Email Address">
+                        <button type="submit" class="newsletter-button" data-translate="footer.subscribe">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p data-translate="copyright">© 2025 AMW Store. All rights reserved.</p>
+            </div>
         </div>
     </footer>
+
+    <script src="script/product.js"></script>
 </body>
 </html>
