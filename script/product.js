@@ -69,16 +69,82 @@ document.addEventListener('DOMContentLoaded', function() {
                     productTitle.textContent = productData.name;
                 }
                 
-                // تحديث سعر المنتج
+                // تحديث التقييمات
+                if (stars && stars.length > 0 && productData.rating) {
+                    // تحديث النجوم بناءً على التقييم
+                    const fullStars = Math.floor(productData.rating);
+                    const hasHalfStar = productData.rating - fullStars >= 0.5;
+                    
+                    stars.forEach((star, index) => {
+                        if (index < fullStars) {
+                            star.textContent = '★'; // نجمة كاملة
+                        } else if (index === fullStars && hasHalfStar) {
+                            star.textContent = '★'; // نجمة كاملة للتبسيط (يمكن استخدام نجمة نصفية إذا كانت متوفرة)
+                        } else {
+                            star.textContent = '☆'; // نجمة فارغة
+                        }
+                    });
+                }
+                
+                // تحديث عدد التقييمات
+                const ratingCount = document.querySelector('.rating-count');
+                if (ratingCount && productData.rating && productData.reviewCount) {
+                    ratingCount.textContent = `(${productData.rating} out of 5 | ${productData.reviewCount} reviews)`;
+                }
+                
+                // تحديث نسبة الخصم
+                const offerBadge = document.querySelector('.offer-badge');
+                if (offerBadge && productData.discount) {
+                    offerBadge.textContent = `Discount ${productData.discount}%`;
+                    offerBadge.style.display = 'block';
+                } else if (offerBadge) {
+                    offerBadge.style.display = 'none';
+                }
+                
+                // تحديث السعر الحالي
                 const productPrice = document.querySelector('.product-price');
                 if (productPrice) {
                     productPrice.textContent = formatPrice(productData.price);
                 }
                 
+                // تحديث السعر القديم
+                const oldPrice = document.querySelector('.old-price');
+                if (oldPrice) {
+                    if (productData.oldPrice) {
+                        oldPrice.textContent = formatPrice(productData.oldPrice);
+                        oldPrice.style.display = 'block';
+                    } else {
+                        oldPrice.style.display = 'none';
+                    }
+                }
+                
+                // تحديث مقدار التوفير
+                const savings = document.querySelector('.savings');
+                if (savings) {
+                    if (productData.oldPrice) {
+                        const savedAmount = productData.oldPrice - productData.price;
+                        savings.textContent = `You saved: ${formatPrice(savedAmount)}`;
+                        savings.style.display = 'block';
+                    } else {
+                        savings.style.display = 'none';
+                    }
+                }
+                
                 // تحديث وصف المنتج
-                const productDescription = document.querySelector('.product-description');
-                if (productDescription) {
-                    productDescription.textContent = productData.description;
+                const productDescriptionElement = document.querySelector('.product-description p');
+                if (productDescriptionElement) {
+                    productDescriptionElement.textContent = productData.longDescription || productData.description;
+                }
+                
+                // تحديث ميزات المنتج
+                const productFeaturesList = document.querySelector('.product-features ul');
+                if (productFeaturesList && productData.features && productData.features.length > 0) {
+                    productFeaturesList.innerHTML = '';
+                    productData.features.forEach(feature => {
+                        const li = document.createElement('li');
+                        li.textContent = feature;
+                        productFeaturesList.appendChild(li);
+                    });
                 }
                 
                 // استخدام الصورة المخزنة من الصفحة الرئيسية إذا كانت متوفرة
@@ -139,7 +205,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: 1,
                 name: "Gaming Laptop",
                 price: 999.99,
+                oldPrice: 1299.99,
+                discount: 23,
+                rating: 4.7,
+                reviewCount: 128,
                 description: "حاسوب محمول عالي الأداء مخصص للألعاب مع معالج قوي وبطاقة رسومات متطورة.",
+                longDescription: "حاسوب محمول عالي الأداء مخصص للألعاب مع معالج Intel Core i7 من الجيل الحادي عشر وبطاقة رسومات NVIDIA GeForce RTX 3070. يأتي مع شاشة 15.6 بوصة بدقة Full HD ومعدل تحديث 144 هرتز، وذاكرة وصول عشوائي 16 جيجابايت، وقرص تخزين SSD بسعة 1 تيرابايت.",
+                features: [
+                    "معالج Intel Core i7 من الجيل الحادي عشر",
+                    "بطاقة رسومات NVIDIA GeForce RTX 3070",
+                    "ذاكرة وصول عشوائي 16 جيجابايت",
+                    "قرص تخزين SSD بسعة 1 تيرابايت",
+                    "شاشة 15.6 بوصة بدقة Full HD ومعدل تحديث 144 هرتز"
+                ],
                 images: [
                     "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500",
                     "img/laptop1.jpg",
@@ -152,7 +230,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: 2,
                 name: "Wireless Headphones",
                 price: 149.99,
+                oldPrice: 249.99,
+                discount: 40,
+                rating: 4.2,
+                reviewCount: 150,
                 description: "سماعات لاسلكية فاخرة مع إلغاء الضوضاء النشط وجودة صوت استثنائية.",
+                longDescription: "سماعات لاسلكية فاخرة مع تقنية إلغاء الضوضاء النشط وجودة صوت استثنائية. تتميز بعمر بطارية يصل إلى 20 ساعة، وتصميم مريح للاستخدام لفترات طويلة، ومقاومة للماء والعرق، مما يجعلها مثالية للاستخدام اليومي والرياضة.",
+                features: [
+                    "عمر بطارية يصل إلى 20 ساعة",
+                    "مقاومة للماء والعرق",
+                    "تحكم باللمس",
+                    "جودة صوت عالية",
+                    "تقنية إلغاء الضوضاء النشط"
+                ],
                 images: [
                     "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
                     "img/61cf5aFhqVL._AC_SL1500_.jpg",
@@ -165,7 +255,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: 3,
                 name: "Smartwatch",
                 price: 199.99,
+                oldPrice: 299.99,
+                discount: 33,
+                rating: 4.5,
+                reviewCount: 95,
                 description: "ساعة ذكية متطورة لتتبع اللياقة البدنية مع شاشة عالية الدقة وعمر بطارية طويل.",
+                longDescription: "ساعة ذكية متطورة لتتبع اللياقة البدنية مع شاشة AMOLED عالية الدقة وعمر بطارية يصل إلى 14 يوماً. تتميز بمقاومة الماء حتى عمق 50 متراً، وتتبع النوم، وقياس معدل ضربات القلب، وتتبع أكثر من 100 نوع من التمارين الرياضية.",
+                features: [
+                    "شاشة AMOLED عالية الدقة",
+                    "عمر بطارية يصل إلى 14 يوماً",
+                    "مقاومة الماء حتى عمق 50 متراً",
+                    "تتبع النوم وقياس معدل ضربات القلب",
+                    "تتبع أكثر من 100 نوع من التمارين الرياضية"
+                ],
                 images: [
                     "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500",
                     "img/watch1.jpg",
@@ -178,7 +280,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: 4,
                 name: "4K Monitor",
                 price: 299.99,
+                oldPrice: 499.99,
+                discount: 40,
+                rating: 4.8,
+                reviewCount: 75,
                 description: "شاشة ألعاب بدقة 4K فائقة الوضوح مع معدل تحديث عالي وألوان دقيقة.",
+                longDescription: "شاشة ألعاب بدقة 4K فائقة الوضوح مع معدل تحديث 144 هرتز وألوان دقيقة. تتميز بتقنية HDR10 لتجربة بصرية استثنائية، وزمن استجابة 1 مللي ثانية، وتقنية منع تمزق الصورة، مما يجعلها مثالية للألعاب والتصميم والمونتاج.",
+                features: [
+                    "دقة 4K فائقة الوضوح",
+                    "معدل تحديث 144 هرتز",
+                    "زمن استجابة 1 مللي ثانية",
+                    "تقنية HDR10",
+                    "تقنية منع تمزق الصورة"
+                ],
                 images: [
                     "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500",
                     "img/monitor1.jpg",

@@ -96,6 +96,16 @@ header .container {
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
+.logo a {
+    text-decoration: none;
+    display: block;
+}
+
+.logo a:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+}
+
 .logo h1 {
     font-size: 1.8rem;
     color: var(--primary-color);
@@ -871,4 +881,4 @@ footer {
 
 [dir="rtl"] .product-not-found {
     text-align: center;
-} 
+}

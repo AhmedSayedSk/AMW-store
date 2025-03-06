@@ -100,6 +100,11 @@ header .container {
     transform: rotate(-45deg) translate(6px, -6px);
 }
 
+.logo a {
+    text-decoration: none;
+    display: block;
+}
+
 .logo h1 {
     font-size: 28px;
     color: var(--primary-color);
@@ -595,7 +600,8 @@ header .container {
 }
 
 .add-to-cart:hover {
-    background-color: #e6c200; /* Slightly darker yellow */
+    background-color: var(--secondary-color); /* Black background on hover */
+    color: var(--primary-color); /* Yellow text on hover */
     transform: scale(1.02);
 }
 
