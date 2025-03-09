@@ -569,11 +569,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
-
-// Cart navigation
-document.querySelector('.cart a').addEventListener('click', function(e) {
-    // Save cart data to localStorage before navigating
-    localStorage.setItem('cartItems', JSON.stringify(cart));
-    localStorage.setItem('cartCount', cartCount);
+    
+    // Cart navigation
+    const cartLink = document.querySelector('.cart a');
+    if (cartLink) {
+        cartLink.addEventListener('click', function(e) {
+            // Save cart data to localStorage before navigating
+            localStorage.setItem('cartItems', JSON.stringify(cart));
+            localStorage.setItem('cartCount', cartCount);
+        });
+    }
 });
